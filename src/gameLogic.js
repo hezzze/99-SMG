@@ -1,6 +1,5 @@
 angular.module('99-SMG', []).factory('gameLogic', function() {
 
-
     'use strict';
 
     // Constants
@@ -29,14 +28,14 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
 
     function Player(idx, hand) {
 
-        if (!idx) {
+        if (idx === undefined || idx === null) {
             throw new Error("missing index, construct Player error!");
         }
 
         this.idx = idx; //integer， required
         this.hand = hand || []; //array of string
-        this.good() = function() {
-            return hand.length > 0;
+        this.good = function() {
+            return this.hand.length > 0;
         }
 
     }
@@ -70,11 +69,12 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         this.getWinner = function() {
 
             var nGood = this.players.filter(function(p) {
-                return !p.good();
+                return p.good();
             });
 
             if (nGood.length < 1) {
-                throw new Error("nGood's length can't be less than 1!")
+
+                throw new Error("nGood's length can't be less than 1! (" + nGood.length + ")");
             }
 
             if (nGood.length === 1) {
@@ -204,8 +204,8 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
             throw new Error(action.cardKey + "not found in player's hand!");
         }
 
-        turnPlayer.hand.remove(action.cardKey);
-        gameInfoAfter.used.push(action.cardKey);
+        turnPlayer.hand.remove(turnPlayer.hand.indexOf(action.cardKey));
+        gameInfoAfter.usedCards.push(action.cardKey);
 
         operations.push({
             setVisibility: {
@@ -301,7 +301,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
 
 
         if (gameInfoAfter.points > 99) {
-            gameInfoAfter.used = gameInfoAfter.used.concat(turnPlayer.hand);
+            gameInfoAfter.usedCards = gameInfoAfter.usedCards.concat(turnPlayer.hand);
 
             //player failed, reaction hand 
             // to change its status
@@ -311,15 +311,33 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         // Draw a card at the end of the turn
         //assume the unused pile will never be empty
         // at this moment
-        var newCardKey = gameInfoAfter.unused.shift();
-        if (gameInfoAfter.unused.length === 0) {
+        var newCardKey = gameInfoAfter.unusedCards.shift();
+        if (gameInfoAfter.unusedCards.length === 0) {
+
+            // set visibility for every usedCards
+            gameInfoAfter.usedCards.forEach(function(ckey) {
+                operations.push({
+                    setVisibility: {
+                        key: ckey,
+                        visibleToPlayerIndexes: []
+                    }
+                });
+            });
+
             //fill unused pile
             // simply fills it with used pile
-            gameInfoAfter.unused = gameInfoAfter.used;
-            gameInfoAfter.used = [];
+            gameInfoAfter.unusedCards = gameInfoAfter.usedCards;
+            gameInfoAfter.usedCards = [];
         }
         if (turnPlayerCanDraw) {
             turnPlayer.hand.push(newCardKey);
+
+            operations.push({
+                setVisibility:{
+                    key: newCardKey,
+                    visibleToPlayerIndexes: [turnIdx]
+                }
+            })
         }
 
 
@@ -328,7 +346,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
 
 
         if (!playedChooseNext) {
-            nextTurnIndex = gameInfoAfter.getNextTurnIndex(turnIndex);
+            nextTurnIndex = gameInfoAfter.getNextTurnIndex(turnIdx);
         }
 
 
@@ -364,7 +382,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
     }
 
 
-    function isMoveOK(params) {
+    function isMoveOk(params) {
 
         var move = params.move;
         var turnIndexBeforeMove = params.turnIndexBeforeMove;
@@ -375,10 +393,15 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
             var gameInfo = stateBeforeMove[GAME_INFO_KEY];
             var expectedMove = createMove(action, gameInfo, turnIndexBeforeMove);
             if (!angular.equals(move, expectedMove)) {
+                console.log(move);
+
                 return false;
             }
         } catch (e) {
-            // if there are any exceptions then the move is illegal
+            //if there are any exceptions then the move is illegal
+
+            console.log(e.message);
+
             return false;
         }
         return true;
@@ -387,7 +410,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
 
     return {
         createMove: createMove,
-        isMoveOK: isMoveOK,
+        isMoveOk: isMoveOk,
         GameInfo: GameInfo,
         Player: Player
     };

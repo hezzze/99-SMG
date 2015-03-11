@@ -1,5 +1,4 @@
 describe("In 99", function() {
-    'use strict';
 
     var _gameLogic;
 
@@ -28,7 +27,7 @@ describe("In 99", function() {
 
     }
 
-    function _getTestState(info, action) {
+    function getTestState(info, action) {
         return {
             "game-info": info,
             "game-action": action
