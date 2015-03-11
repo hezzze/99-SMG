@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "name": "99-SMG",
+  "description": "A web app based on the SMG game API",
+  "devDependencies": {
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-coverage": "^0.2.7",
+    "karma-jasmine": "^0.2.2"
+  }
+}
