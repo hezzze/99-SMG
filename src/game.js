@@ -1,4 +1,4 @@
-angular.module('99-SMG')
+angular.module('myApp')
 
 .controller('GameCtrl', ['$rootScope', '$scope', '$log', '$timeout', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService', '$translate', function(($rootScope, $scope, $log, $timeout,
             gameService, stateService, gameLogic, aiService,

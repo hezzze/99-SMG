@@ -1,4 +1,4 @@
-angular.module('99-SMG', []).factory('gameLogic', function() {
+angular.module('myApp', []).factory('gameLogic', function() {
 
     'use strict';
 
