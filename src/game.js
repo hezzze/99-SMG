@@ -1,42 +1,42 @@
 angular.module('myApp')
 
-.controller('GameCtrl', ['$rootScope', '$scope', '$log', '$timeout', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService', '$translate', function(($rootScope, $scope, $log, $timeout,
-            gameService, stateService, gameLogic, aiService,
-            resizeGameAreaService, $translate) {
+.controller('GameCtrl', ['$rootScope', '$scope', '$log', '$timeout', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService', '$translate', function($rootScope, $scope, $log, $timeout,
+    gameService, stateService, gameLogic, aiService,
+    resizeGameAreaService, $translate) {
 
-            'use strict';
+    'use strict';
 
-            resizeGameAreaService.setWidthToHeight(0.5);
+    resizeGameAreaService.setWidthToHeight(0.5);
 
-            var state = null;
-            var isMyTurn = false;
+    var state = null;
+    var isMyTurn = false;
 
-            function updateUI(params) {
-                state = params.stateAfterMove;
+    function updateUI(params) {
+        state = params.stateAfterMove;
 
-                if (state.gameInfo == undefined) {
+        if (state.gameInfo == undefined) {
 
-                    //Start a new game
-                    //passing null to create move will generate
-                    //initial operations
-                    gameService.makeMove(gameLogic.createMove(null));
-                    return;
-                }
+            //Start a new game
+            //passing null to create move will generate
+            //initial operations
+            gameService.makeMove(gameLogic.createMove(null));
+            return;
+        }
 
 
 
-            }
+    }
 
-        }])
+}])
 
 .directive('hzSprite', function() {
-	var link = function(scope, element, attrs) {
+    var link = function(scope, element, attrs) {
 
-	};
+    };
 
 
-	return {
-		restrict: 'E',
-		link: link
-	}
-}) 
+    return {
+        restrict: 'E',
+        link: link
+    }
+})
