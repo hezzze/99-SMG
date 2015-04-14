@@ -29,7 +29,7 @@ angular.module('99-SMG')
 
         }])
 
-.directive('hz-sprite', function() {
+.directive('hzSprite', function() {
 	var link = function(scope, element, attrs) {
 
 	};
