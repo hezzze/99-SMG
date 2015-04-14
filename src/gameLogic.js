@@ -18,8 +18,8 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
     var N_CARDS_PER_HAND = 5;
     var CARD_KEY_PREFIX = "C";
     var USED_PILE_KEY = "U";
-    var GAME_INFO_KEY = "game-info";
-    var GAME_ACTION_KEY = "game-action";
+    var GAME_INFO_KEY = "gameInfo";
+    var GAME_ACTION_KEY = "gameAction";
     var N_PLAYERS = 3;
     var GAME_ACTION_OPERATION_IDX = 1;
 
@@ -172,10 +172,10 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
     }
 
 
-    function createMove(action, gameInfo, turnIdx) {
+    function createMove(gameInfo, action, turnIdx) {
 
         //initial condition
-        if (action === null || action === undefined || gameInfo === null || gameInfo === undefined) {
+        if (gameInfo === null || gameInfo === undefined || action === null || action === undefined) {
             return getInitialOperations(N_PLAYERS);
         }
 
@@ -201,7 +201,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         var nextTurnIndex;
 
         if (!turnPlayer.hand.contains(action.cardKey)) {
-            throw new Error(action.cardKey + "not found in player's hand!");
+            throw new Error(action.cardKey + " not found in player's hand!");
         }
 
         turnPlayer.hand.remove(turnPlayer.hand.indexOf(action.cardKey));
@@ -282,7 +282,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
                         }
                     });
                 });
-                turnPlayer.hand.forEach(function(d,i) {
+                turnPlayer.hand.forEach(function(d, i) {
                     operations.push({
                         setVisibility: {
                             key: d,
@@ -306,6 +306,20 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         if (gameInfoAfter.points > 99) {
             gameInfoAfter.usedCards = gameInfoAfter.usedCards.concat(turnPlayer.hand);
 
+            //make player's cards visible
+            // since they are now in used pile
+            turnPlayer.hand.forEach(function(key) {
+                operations.push({
+                    setVisibility: {
+                        key: key,
+                        visibleToPlayerIndexes: null
+                    }
+                });
+            });
+
+            //points remains 99 for the next player
+            gameInfoAfter.points = 99;
+
             //player failed, reaction hand 
             // to change its status
             turnPlayer.hand = [];
@@ -314,22 +328,23 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         // Draw a card at the end of the turn
         //assume the unused pile will never be empty
         // at this moment
+        //if the player failed, no card is drawn
 
-        if (turnPlayerCanDraw) {
+        if (turnPlayerCanDraw && turnPlayer.good()) {
 
             var newCardKey = gameInfoAfter.unusedCards.shift();
 
             turnPlayer.hand.push(newCardKey);
 
             operations.push({
-                setVisibility:{
+                setVisibility: {
                     key: newCardKey,
                     visibleToPlayerIndexes: [turnIdx]
                 }
-            })
+            });
         }
 
-        
+
         if (gameInfoAfter.unusedCards.length === 0) {
 
             // set visibility for every usedCards
@@ -347,7 +362,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
             gameInfoAfter.unusedCards = gameInfoAfter.usedCards;
             gameInfoAfter.usedCards = [];
         }
-        
+
 
 
         var firstOperation;
@@ -402,7 +417,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
         try {
             var action = move[GAME_ACTION_OPERATION_IDX].set.value;
             var gameInfo = stateBeforeMove[GAME_INFO_KEY];
-            var expectedMove = createMove(action, gameInfo, turnIndexBeforeMove);
+            var expectedMove = createMove(gameInfo, action, turnIndexBeforeMove);
             if (!angular.equals(move, expectedMove)) {
                 //console.log(move);
 
@@ -431,7 +446,7 @@ angular.module('99-SMG', []).factory('gameLogic', function() {
 
 
 //Helper 
-
+//http://ejohn.org/blog/javascript-array-remove/
 Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
     this.length = from < 0 ? this.length + from : from;
