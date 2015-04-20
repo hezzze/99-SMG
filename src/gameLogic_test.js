@@ -2,7 +2,7 @@ describe("In 99", function() {
 
     var _gameLogic;
 
-    beforeEach(module("99-SMG"));
+    beforeEach(module("myApp"));
 
     beforeEach(inject(function(gameLogic) {
         _gameLogic = gameLogic;

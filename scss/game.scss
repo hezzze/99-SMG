@@ -1,0 +1,194 @@
+body {
+    font-family: "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif";
+    font-size: 12px;
+}
+
+hz-player {
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 1px rgba(50, 50, 50, 0.14);
+    background-color: rgb(248, 248, 248);
+    display: inline-block;
+    position: relative;
+    margin: 2% 2% 0;
+    .hz-avatar {
+        position: absolute;
+        left: 5%;
+        top: 18%;
+        width: 30%;
+        img {
+            max-width: 100%;
+            border-radius: 50%;
+        }
+    }
+    .hz-name {
+        position: absolute;
+        left: 45%;
+        top: 20%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 40%;
+    }
+    .hz-n-cards {
+        img {
+            width: 25%;
+            position: absolute;
+            top: 5%;
+        }
+        position: absolute;
+        left: 45%;
+        width: 40%;
+        height: 50%;
+        top: 50%;
+        & > div {
+            position: absolute;
+            left: 35%;
+            top: 8%;
+            i {
+                color: darkgray;
+            }
+            span {
+                font-size: x-larger;
+                color: darkgray;
+            }
+        }
+    }
+}
+
+#hz_upper_panel {
+    height: 33%;
+}
+
+#hz_middle_panel {
+    height: 33%;
+    section {
+        margin: 2% 2% 0;
+        display: inline-block;
+        position: relative;
+        height: 100%;
+        .hz-label {
+            margin-top: 95%;
+            text-align: center;
+            width: 100%;
+            font-size: larger;
+            color: rgb(129, 128, 120);
+        }
+    }
+    #current_score {
+        width: 45%;
+        #score {
+            position: absolute;
+            font-size: 80px;
+            text-align: center;
+            width: 100%;
+            left: 0%;
+            top: 18%;
+        }
+    }
+    #last_played {
+        width: 45%;
+        hz-sprite {
+            position: absolute;
+            left: 27%;
+            top: 17%;
+        }
+    }
+}
+
+#hz_bottom_panel {
+    height: 30%;
+    section {
+        width: 90%;
+        margin: 0 auto;
+    }
+    #action {
+        height: 33%;
+        #plus_minus {
+            width: 33%;
+            float: left;
+            font-size: 25px;
+            margin: 2%;
+            .fa.fa-minus {
+                float: right;
+            }
+        }
+    }
+    #hand {
+        height: 66%;
+        padding-left: 7%;
+    }
+    hz-sprite {
+        margin: 0em 0.1em 0em;
+    }
+}
+
+//reference bootstrap button css
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    &:focus, &:active:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+    &:hover &:focus {
+        color: #333;
+        text-decoration: none;
+    }
+    &:active {
+        outline: 0;
+        background-image: none;
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    }
+    &[disabled],
+    &.disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+        opacity: 0.65;
+        filter: alpha(opacity=65);
+        box-shadow: none;
+    }
+    &.hz-btn {
+        border-radius: 50%;
+        font-size: 18px;
+        float: right;
+    }
+}
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    &:hover, &:focus, &:active {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
+    &.disabled,
+    &.disabled:hover,
+    &.disabled:focus,
+    &.disabled:active,
+    &[disabled],
+    &[disabled]:hover,
+    &[disabled]:active {
+        background-color: #fff;
+        border-color: #ccc;
+    }
+}

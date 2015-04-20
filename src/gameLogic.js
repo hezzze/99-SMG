@@ -200,11 +200,11 @@ angular.module('myApp', []).factory('gameLogic', function() {
         var playedChooseNext = false;
         var nextTurnIndex;
 
-        if (!turnPlayer.hand.contains(action.cardKey)) {
+        if (!_contains(turnPlayer.hand, action.cardKey)) {
             throw new Error(action.cardKey + " not found in player's hand!");
         }
 
-        turnPlayer.hand.remove(turnPlayer.hand.indexOf(action.cardKey));
+        _remove(turnPlayer.hand, turnPlayer.hand.indexOf(action.cardKey));
         gameInfoAfter.usedCards.push(action.cardKey);
 
         operations.push({
@@ -251,7 +251,7 @@ angular.module('myApp', []).factory('gameLogic', function() {
 
 
                 var cardKeyDrawn = target.hand[action.how.drawIdx];
-                target.hand.remove(action.how.drawIdx);
+                _remove(target.hand, action.how.drawIdx);
                 turnPlayer.hand.push(cardKeyDrawn);
                 operations.push({
                     setVisibility: {
@@ -433,6 +433,18 @@ angular.module('myApp', []).factory('gameLogic', function() {
         return true;
     }
 
+    //Helper 
+    //http://ejohn.org/blog/javascript-array-remove/
+    function _remove(arr, from, to) {
+        var rest = arr.slice((to || from) + 1 || arr.length);
+        arr.length = from < 0 ? arr.length + from : from;
+        return Array.prototype.push.apply(arr, rest);
+    }
+
+    function _contains(arr, elmt) {
+        return arr.indexOf(elmt) !== -1;
+    }
+
 
     return {
         createMove: createMove,
@@ -442,20 +454,63 @@ angular.module('myApp', []).factory('gameLogic', function() {
     };
 
 
+})
+
+.factory('gameHelpers', function() {
+
+    function cardStrToFrameIdx(str) {
+
+        var suitToIdx = {
+            C: 0,
+            S: 1,
+            H: 2,
+            D: 3
+        };
+        var rankToIdx = {
+            A: 0,
+            K: 1,
+            Q: 2,
+            J: 3,
+            "X": 4,
+            "9": 5,
+            "8": 6,
+            "7": 7,
+            "6": 8,
+            "5": 9,
+            "4": 10,
+            "3": 11,
+            "2": 12
+        };
+
+        switch (str) {
+            case "BJ":
+                return 53;
+            case "RJ":
+                return 54;
+            default:
+                return rankToIdx[str[0]] + suitToIdx[str[1]] * 13;
+        }
+
+    }
+
+    function getComputedInnerWidth(container) {
+        var style = window.getComputedStyle(container);
+
+        function f(s) {
+            return parseInt(s.substr(0, s.length - 2));
+        }
+
+        return container.clientWidth - f(style.getPropertyValue('padding-left')) - f(style.getPropertyValue('padding-right'));
+    }
+
+    return {
+        getComputedInnerWidth: getComputedInnerWidth,
+        cardStrToFrameIdx: cardStrToFrameIdx
+    };
 });
 
 
-//Helper 
-//http://ejohn.org/blog/javascript-array-remove/
-Array.prototype.remove = function(from, to) {
-    var rest = this.slice((to || from) + 1 || this.length);
-    this.length = from < 0 ? this.length + from : from;
-    return this.push.apply(this, rest);
-};
 
-Array.prototype.contains = function(elmt) {
-    return this.indexOf(elmt) !== -1;
-};
 
 //+ Jonas Raoni Soares Silva
 //@ http://jsfromhell.com/array/shuffle [v1.0]

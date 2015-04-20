@@ -1,0 +1,220 @@
+/* line 1, scss/game.scss */
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif";
+  font-size: 12px;
+}
+
+/* line 6, scss/game.scss */
+hz-player {
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 1px rgba(50, 50, 50, 0.14);
+  background-color: #f8f8f8;
+  display: inline-block;
+  position: relative;
+  margin: 2% 2% 0;
+}
+/* line 13, scss/game.scss */
+hz-player .hz-avatar {
+  position: absolute;
+  left: 5%;
+  top: 18%;
+  width: 30%;
+}
+/* line 18, scss/game.scss */
+hz-player .hz-avatar img {
+  max-width: 100%;
+  border-radius: 50%;
+}
+/* line 23, scss/game.scss */
+hz-player .hz-name {
+  position: absolute;
+  left: 45%;
+  top: 20%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 40%;
+}
+/* line 32, scss/game.scss */
+hz-player .hz-n-cards {
+  position: absolute;
+  left: 45%;
+  width: 40%;
+  height: 50%;
+  top: 50%;
+}
+/* line 33, scss/game.scss */
+hz-player .hz-n-cards img {
+  width: 25%;
+  position: absolute;
+  top: 5%;
+}
+/* line 43, scss/game.scss */
+hz-player .hz-n-cards > div {
+  position: absolute;
+  left: 35%;
+  top: 8%;
+}
+/* line 47, scss/game.scss */
+hz-player .hz-n-cards > div i {
+  color: darkgray;
+}
+/* line 50, scss/game.scss */
+hz-player .hz-n-cards > div span {
+  font-size: x-larger;
+  color: darkgray;
+}
+
+/* line 58, scss/game.scss */
+#hz_upper_panel {
+  height: 33%;
+}
+
+/* line 62, scss/game.scss */
+#hz_middle_panel {
+  height: 33%;
+}
+/* line 64, scss/game.scss */
+#hz_middle_panel section {
+  margin: 2% 2% 0;
+  display: inline-block;
+  position: relative;
+  height: 100%;
+}
+/* line 69, scss/game.scss */
+#hz_middle_panel section .hz-label {
+  margin-top: 95%;
+  text-align: center;
+  width: 100%;
+  font-size: larger;
+  color: #818078;
+}
+/* line 77, scss/game.scss */
+#hz_middle_panel #current_score {
+  width: 45%;
+}
+/* line 79, scss/game.scss */
+#hz_middle_panel #current_score #score {
+  position: absolute;
+  font-size: 80px;
+  text-align: center;
+  width: 100%;
+  left: 0%;
+  top: 18%;
+}
+/* line 88, scss/game.scss */
+#hz_middle_panel #last_played {
+  width: 45%;
+}
+/* line 90, scss/game.scss */
+#hz_middle_panel #last_played hz-sprite {
+  position: absolute;
+  left: 27%;
+  top: 17%;
+}
+
+/* line 98, scss/game.scss */
+#hz_bottom_panel {
+  height: 30%;
+}
+/* line 100, scss/game.scss */
+#hz_bottom_panel section {
+  width: 90%;
+  margin: 0 auto;
+}
+/* line 104, scss/game.scss */
+#hz_bottom_panel #action {
+  height: 33%;
+}
+/* line 106, scss/game.scss */
+#hz_bottom_panel #action #plus_minus {
+  width: 33%;
+  float: left;
+  font-size: 25px;
+  margin: 2%;
+}
+/* line 111, scss/game.scss */
+#hz_bottom_panel #action #plus_minus .fa.fa-minus {
+  float: right;
+}
+/* line 116, scss/game.scss */
+#hz_bottom_panel #hand {
+  height: 66%;
+  padding-left: 7%;
+}
+/* line 120, scss/game.scss */
+#hz_bottom_panel hz-sprite {
+  margin: 0em 0.1em 0em;
+}
+
+/* line 126, scss/game.scss */
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 146, scss/game.scss */
+.btn:focus, .btn:active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+/* line 151, scss/game.scss */
+.btn:hover .btn:focus {
+  color: #333;
+  text-decoration: none;
+}
+/* line 155, scss/game.scss */
+.btn:active {
+  outline: 0;
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+/* line 160, scss/game.scss */
+.btn[disabled], .btn.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  box-shadow: none;
+}
+/* line 168, scss/game.scss */
+.btn.hz-btn {
+  border-radius: 50%;
+  font-size: 18px;
+  float: right;
+}
+
+/* line 175, scss/game.scss */
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+/* line 179, scss/game.scss */
+.btn-default:hover, .btn-default:focus, .btn-default:active {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+/* line 184, scss/game.scss */
+.btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:active {
+  background-color: #fff;
+  border-color: #ccc;
+}

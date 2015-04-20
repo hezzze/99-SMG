@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- build:[manifest] game.appcache -->
-<html lang="en" ng-app="99-SMG" ng-strict-di>
+<html lang="en" ng-app="myApp" ng-strict-di>
 <!-- /build -->
 
 <head>
@@ -35,12 +35,41 @@
 
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 
 <body ng-cloak ng-controller="GameCtrl">
 
 <div id="gameArea">
-  <hz-sprite></hz-sprite>
+  <section id="hz_upper_panel">
+    <hz-player ng-repeat="player in players" name="{{player.name}}" n-cards="{{player.nCards}}" avatar-src="{{player.face}}" poker-back-src="imgs/poker-back.png" width-ratio="0.45"></hz-player>
+  </section>
+  <hr>
+  <section id="hz_middle_panel">
+    <section id="current_score">
+      <div id="score">98</div>
+      <div class="hz-label">Points</div>
+    </section>
+    <section id="last_played">
+      <div><hz-sprite width-ratio="{{3/7}}" ratio="{{4/3}}" src="imgs/poker.png" n-cols="11" frame-index="26"></hz-sprite></div>
+      <div class="hz-label">Last Played</div>
+    </section>
+  </section>
+  <hr>
+  <section id="hz_bottom_panel">
+    <section id="action">
+      <div id="plus_minus">
+        <i class="fa fa-plus"></i>
+        <i class="fa fa-minus"></i>
+      </div>
+      <span class="btn btn-default hz-btn">
+        <span><i class="fa fa-check"></i></span>
+      </span>
+    </section>
+    <section id="hand">
+      <hz-sprite ng-repeat="card in hand" width-ratio="{{1/6}}" ratio="{{4/3}}" src="imgs/poker.png" n-cols="11" frame-index="{{card.frameIdx}}"></hz-sprite>
+    </section>
+  </section>
 </div>
 
 </body>
