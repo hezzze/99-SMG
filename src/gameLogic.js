@@ -20,7 +20,6 @@ angular.module('myApp', []).factory('gameLogic', function() {
     var USED_PILE_KEY = "U";
     var GAME_INFO_KEY = "gameInfo";
     var GAME_ACTION_KEY = "gameAction";
-    var N_PLAYERS = 3;
     var GAME_ACTION_OPERATION_IDX = 1;
 
 
@@ -57,7 +56,7 @@ angular.module('myApp', []).factory('gameLogic', function() {
         this.usedCards = used || [];
 
         //Not initialize with players 
-        if (players.length === 0) {
+        if (this.players.length === 0) {
             for (var i = 0; i < nPlayers; i++) {
                 this.players.push(new Player(i));
             }
@@ -105,11 +104,12 @@ angular.module('myApp', []).factory('gameLogic', function() {
         }, {
             set: {
                 key: GAME_ACTION_KEY,
-                value: null
+                value: {}
             }
         }];
 
-
+        //variable for shuffling
+        var cardKeys = [];
 
         for (var i = 0; i < TOTAL_N_CARDS; i++) {
             operations.push({
@@ -117,13 +117,20 @@ angular.module('myApp', []).factory('gameLogic', function() {
                     key: CARD_KEY_PREFIX + i,
                     value: RANKS[i % RANKS.length] + SUITS[i % SUITS.length]
                 }
-            })
+            });
+
+            // for shuffling
+            cardKeys.push(CARD_KEY_PREFIX + i);
         }
 
-        var gameInfo = new GameInfo(nPlayers);
+        //shuffle
+        operations.push({
+            shuffle: {
+                keys: cardKeys
+            }
+        });
 
-        //variable for shuffling
-        var cardKeys = [];
+        var gameInfo = new GameInfo(nPlayers);
 
         //set visibility for deck and push card indexes 
         // to players in game info obj
@@ -140,13 +147,17 @@ angular.module('myApp', []).factory('gameLogic', function() {
 
                 gameInfo.players[i % nPlayers].hand.push(CARD_KEY_PREFIX + i);
             } else {
-
+                operations.push({
+                    setVisibility: {
+                        key: CARD_KEY_PREFIX + i,
+                        visibleToPlayerIndexes: []
+                    }
+                });
                 //put cards left into the unused pile
                 gameInfo.unusedCards.push(CARD_KEY_PREFIX + i);
             }
 
-            // for shuffling
-            cardKeys.push(CARD_KEY_PREFIX + i);
+
 
 
         }
@@ -159,12 +170,9 @@ angular.module('myApp', []).factory('gameLogic', function() {
             }
         });
 
-        //shuffle
-        operations.push({
-            shuffle: {
-                keys: cardKeys
-            }
-        });
+
+
+        return operations;
     }
 
     function getPossibleMoves() {
@@ -175,9 +183,9 @@ angular.module('myApp', []).factory('gameLogic', function() {
     function createMove(gameInfo, action, turnIdx) {
 
         //initial condition
-        if (gameInfo === null || gameInfo === undefined || action === null || action === undefined) {
-            return getInitialOperations(N_PLAYERS);
-        }
+        // if (gameInfo === null || gameInfo === undefined || action === null || action === undefined) {
+        //     return getInitialOperations(N_PLAYERS);
+        // }
 
         var operations = [{
             set: {
@@ -413,11 +421,15 @@ angular.module('myApp', []).factory('gameLogic', function() {
         var move = params.move;
         var turnIndexBeforeMove = params.turnIndexBeforeMove;
         var stateBeforeMove = params.stateBeforeMove;
-
+        var expectedMove;
         try {
             var action = move[GAME_ACTION_OPERATION_IDX].set.value;
             var gameInfo = stateBeforeMove[GAME_INFO_KEY];
-            var expectedMove = createMove(gameInfo, action, turnIndexBeforeMove);
+            if (!gameInfo) {
+                expectedMove = getInitialOperations(params.numberOfPlayers);
+            } else {
+                expectedMove = createMove(gameInfo, action, turnIndexBeforeMove);
+            }
             if (!angular.equals(move, expectedMove)) {
                 //console.log(move);
 
@@ -450,7 +462,8 @@ angular.module('myApp', []).factory('gameLogic', function() {
         createMove: createMove,
         isMoveOk: isMoveOk,
         GameInfo: GameInfo,
-        Player: Player
+        Player: Player,
+        getInitialOperations: getInitialOperations
     };
 
 

@@ -8,8 +8,11 @@ angular.module('myApp')
 
     resizeGameAreaService.setWidthToHeight(0.5625);
 
+    var N_PLAYERS = 3;
+
     var state = null;
-    var isMyTurn = false;
+    var canMakeMove = false;
+    var turnIndex = null;
 
     $scope.players = [{
         name: 'Siyang Wang',
@@ -36,19 +39,29 @@ angular.module('myApp')
 
     function updateUI(params) {
         state = params.stateAfterMove;
-
-        if (state.gameInfo == undefined) {
+        
+        if (state.gameInfo === undefined) {
 
             //Start a new game
             //passing null to create move will generate
             //initial operations
-            gameService.makeMove(gameLogic.createMove(null));
+            gameService.makeMove(gameLogic.getInitialOperations(N_PLAYERS));
             return;
         }
+        canMakeMove = params.turnIndexAfterMove >= 0 && params.yourPlayerIndex === params.turnIndexAfterMove;
+        turnIndex = params.turnIndexAfterMove;
 
-
+        console.log(state);
 
     }
+
+    gameService.setGame({
+      gameDeveloperEmail: "hezzze@gmail.com",
+      minNumberOfPlayers: N_PLAYERS,
+      maxNumberOfPlayers: N_PLAYERS,
+      isMoveOk: gameLogic.isMoveOk,
+      updateUI: updateUI
+    });
 
 }])
 
